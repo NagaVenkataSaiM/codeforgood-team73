@@ -143,7 +143,15 @@ REST_FRAMEWORK = {
 }
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    *((
+        'http://localhost:8080',
+        'http://localhost:3000',
+    ) if DEBUG else (
+        # Extract from env
+    ))
+]
 
 
 # Static files (CSS, JavaScript, Images)
