@@ -1,7 +1,10 @@
 from os import stat
+from pydoc import doc
 from django.shortcuts import render
 from django.http import HttpResponse
 import hashlib
+
+from accounts import serializers
 from .models import Invitecodes
 from django.core.mail import BadHeaderError, send_mail, EmailMessage
 from django.conf import settings
@@ -67,10 +70,23 @@ def createDoctor(request):
         specialization = request.POST.get('specialization')
         city = request.POST.get('city')
         gender = request.POST.get('gender')
-
-        
         Doctor.objects.create(name=name,user=user,email=email,phone=phone,specialization=specialization,city=city,gender=gender)
 
         return Response('Created',status=status.HTTP_201_CREATED)
     except:
         return Response('Failed',status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def updateDoctor(request):
+    context = {
+        'request':request
+    }   
+    try:
+        doctor = Doctor.objects.get(user=request.user)
+        serializer = DoctorSerializer(doctor,data=request.data,context=context)
+    except:
+        serializer = DoctorSerializer(data=request.data,context=context)
+    
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
