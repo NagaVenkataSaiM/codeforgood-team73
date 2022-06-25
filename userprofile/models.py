@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -10,5 +11,13 @@ class Invitecodes(models.Model):
 
 
 class Doctor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=40, null=False, blank=False)
+    name = models.CharField(max_length=255,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    email = models.CharField(max_length=100,null=True,blank=True)
+    phone = models.IntegerField(max_length=10,null=True,blank=True)
+    specialization = models.CharField(max_length=255,null=True, blank=True)
+    city = models.CharField(max_length=255,null=True,blank=True)
+    gender = models.CharField(max_length=1,null=True,blank=True)    
+
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
