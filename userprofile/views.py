@@ -1,3 +1,4 @@
+from os import stat
 from django.shortcuts import render
 from django.http import HttpResponse
 import hashlib
@@ -10,6 +11,7 @@ from rest_framework import permissions
 from .serializers import DoctorSerializer
 from .models import Doctor
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.generics import CreateAPIView
 
 
@@ -46,10 +48,29 @@ def getDoctors(request):
     serializer = DoctorSerializer(doctors,many=True)
     return Response(serializer.data)
 
-class CreateDoctorView(CreateAPIView):
+# class CreateDoctorView(CreateAPIView):
 
-    model = Doctor
-    permission_classes = [
-        permissions.AllowAny  # Or anon users can't register
-    ]
-    serializer_class = DoctorSerializer
+#     model = Doctor
+#     permission_classes = [
+#         permissions.IsAuthenticated   # Or anon users can't register
+#     ]
+#     serializer_class = DoctorSerializer
+
+@api_view(['POST'])
+# @permission_classes((permissions.IsAuthenticated))
+def createDoctor(request):
+    try:
+        name = request.POST.get('name')
+        user = request.user
+        email = request.user.email
+        phone = request.POST.get('phone')
+        specialization = request.POST.get('specialization')
+        city = request.POST.get('city')
+        gender = request.POST.get('gender')
+
+        
+        Doctor.objects.create(name=name,user=user,email=email,phone=phone,specialization=specialization,city=city,gender=gender)
+
+        return Response('Created',status=status.HTTP_201_CREATED)
+    except:
+        return Response('Failed',status=status.HTTP_400_BAD_REQUEST)
