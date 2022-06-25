@@ -7,6 +7,10 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
+from .serializers import DoctorSerializer
+from .models import Doctor
+from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView
 
 
 @csrf_exempt
@@ -33,5 +37,19 @@ def Createuser(request):
 # # Views for the profiles of users
 
 # @api_view['POST']
-# @permission_classes((permissions.IsAuthenticated))
 # def Update_doctor_profile(request):
+@api_view(['GET'])  
+# @permission_classes((permissions.AllowAny))
+def getDoctors(request):
+
+    doctors = Doctor.objects.all()
+    serializer = DoctorSerializer(doctors,many=True)
+    return Response(serializer.data)
+
+class CreateDoctorView(CreateAPIView):
+
+    model = Doctor
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+    serializer_class = DoctorSerializer
