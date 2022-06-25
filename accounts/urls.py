@@ -17,6 +17,6 @@ urlpatterns = [
     path('login/', views.login, name="login"),
 
     path('logout/', views.logout, name="logout"),
-    path('createpatient/',views.CreatePatient.as_view(),name="createpatient"),
-    path('viewpatient/<int:pk>/',views.PatientDetail.as_view(),name="viewpatient"),
+    path('createpatient/',views.Createpatient,name="createpatient"),
+    path('viewpatient/',views.PatientDetail,name="viewpatient"),
 ]

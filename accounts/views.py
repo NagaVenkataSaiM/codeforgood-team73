@@ -65,31 +65,35 @@ def logout(request):
     request.user.auth_token.delete()
     return Response(status=status.HTTP_200_OK)
 
-class CreatePatient(generics.ListCreateAPIView):
-    queryset = Patient.objects.all()
-    serializer_class = PatientSerializer
+# class CreatePatient(generics.ListCreateAPIView):
+#     queryset = Patient.objects.all()
+#     serializer_class = PatientSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(profile_of=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(profile_of=self.request.user)
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def PatientDetail(request):
+    queryset = Patient.objects.get(profile_of=request.user)
+    serializer_class = PatientSerializer(queryset)
+    return Response(serializer_class.data)
 
-class PatientDetail(generics.RetrieveAPIView):
-    queryset = Patient.objects.all()
-    serializer_class = PatientSerializer
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def Createpatient(request):
+    profile_of=request.user
+    name=request.POST.get('name')
+    gender=request.POST.get('gender')
+    age=request.POST.get('age')
+    contact=request.POST.get('contact')
+    try:
+        Patient.objects.create(profile_of=profile_of,name=name,gender=gender,age=age,contact=contact)
 
-# @csrf_exempt
-# @api_view(["POST"])
-# @permission_classes((IsAuthenticated,))
-# def Createpatient(request):
-#     profile_of=request.user
-#     name=request.POST.get('name')
-#     gender=request.POST.get('gender')
-#     age=request.POST.get('age')
-#     contact=request.POST.get('contact')
-#     try:
-#         Patient.objects.create(profile_of=profile_of,name=name,gender=gender,age=age,contact=contact)
-#         return Response(status=status.HTTP_200_OK)
-#     except:
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
