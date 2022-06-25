@@ -6,8 +6,8 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 
-from dashboard.models import Appointment
-from .serializers import AppointmentSerializer
+from dashboard.models import Appointment, UserCounselling
+from .serializers import AppointmentSerializer, UserCounsellingSerializer
 
 
 # Create your views here.
@@ -68,3 +68,53 @@ def get_appointments(request):
             return Response(status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response("You are not authorized to get appointments", status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.IsAuthenticated))
+def create_usercounselling(request):
+    try:
+        user = request.user
+        name = request.POST.get('name')
+        gender = request.POST.get('gender')
+        age = request.POST.get('age')
+        state = request.POST.get('state')
+        problem = request.POST.get('problem')
+        contact_number = request.POST.get('contact_number')
+
+        UserCounselling.objects.create(user=user, name=name, gender=gender,
+                                       age=age, state=state, problem=problem, contact_number=contact_number)
+
+        return Response('Created succesfully', status=status.HTTP_201_CREATED)
+    except:
+        return Response("Please check your request", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.IsAuthenticated))
+def update_usercounselling_status(request):
+    if request.user.is_staff:
+        try:
+            user_counselling_id = request.POST.get('user_counselling_id')
+            user_counselling = UserCounselling.objects.get(
+                id=user_counselling_id)
+            user_counselling.is_assigned = True
+            return Response("Success", status=status.HTTP_200_OK)
+        except:
+            return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response('UnAuthorized access', status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated))
+def get_usercounselling(request):
+    if request.user.is_staff:
+        try:
+            user_counselling = UserCounselling.objects.all()
+            serializer = UserCounsellingSerializer(user_counselling, many=True)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response("You are not authorized to get user counselling list", status=status.HTTP_401_UNAUTHORIZED)
