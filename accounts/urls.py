@@ -16,5 +16,6 @@ urlpatterns = [
 
     path('login/', views.login, name="login"),
 
-    path('logout/', views.logout, name="logout")
+    path('logout/', views.logout, name="logout"),
+    path('createpatient/',views.CreatePatient.as_view(),name="createpatient")
 ]
