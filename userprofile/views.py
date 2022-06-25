@@ -78,15 +78,37 @@ def createDoctor(request):
 
 @api_view(['POST'])
 def updateDoctor(request):
-    context = {
-        'request':request
-    }   
-    try:
-        doctor = Doctor.objects.get(user=request.user)
-        serializer = DoctorSerializer(doctor,data=request.data,context=context)
-    except:
-        serializer = DoctorSerializer(data=request.data,context=context)
+    # context = {
+    #     'request':request
+    # }   
+    # try:
+    #     doctor = Doctor.objects.get(user=request.user)
+    #     serializer = DoctorSerializer(doctor,data=request.data,context=context)
+    # except:
+    #     serializer = DoctorSerializer(data=request.data,context=context)
     
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data,status=status.HTTP_200_OK)
+    # if serializer.is_valid(raise_exception=True):
+    #     serializer.save()
+    #     return Response(serializer.data,status=status.HTTP_200_OK)
+    name = request.POST.get('name')
+    user = request.user
+    email = request.user.email
+    phone = request.POST.get('phone')
+    specialization = request.POST.get('specialization')
+    city = request.POST.get('city')
+    gender = request.POST.get('gender')
+
+    doctor = Doctor.objects.get(user=user)
+
+    doctor.update_or_create(name=name,user=user,email=email,phone=phone,specialization=specialization,city=city,gender=gender)
+
+    return Response('Success',status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def getDoctor(request):
+
+    doctor = Doctor.objects.get(user=request.user)
+    serializer = DoctorSerializer(doctor)
+    return Response(serializer.data)
