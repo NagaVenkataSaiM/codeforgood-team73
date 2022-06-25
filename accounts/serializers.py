@@ -27,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PatientSerializer(serializers.ModelSerializer):
     profile_of=serializers.ReadOnlyField(source='user.username')
+    print(profile_of)
     class Meta:
         model=Patient
         fields=['profile_of','name','gender','age','contact']
