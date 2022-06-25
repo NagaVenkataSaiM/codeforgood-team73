@@ -43,24 +43,16 @@ def Createuser(request):
 
 # @api_view['POST']
 # def Update_doctor_profile(request):
-@api_view(['GET'])  
+@api_view(['GET'])
 # @permission_classes((permissions.AllowAny))
 def getDoctors(request):
 
     doctors = Doctor.objects.all()
-    serializer = DoctorSerializer(doctors,many=True)
+    serializer = DoctorSerializer(doctors, many=True)
     return Response(serializer.data)
 
-# class CreateDoctorView(CreateAPIView):
-
-#     model = Doctor
-#     permission_classes = [
-#         permissions.IsAuthenticated   # Or anon users can't register
-#     ]
-#     serializer_class = DoctorSerializer
 
 @api_view(['POST'])
-# @permission_classes((permissions.IsAuthenticated))
 def createDoctor(request):
     try:
         name = request.POST.get('name')
@@ -70,26 +62,16 @@ def createDoctor(request):
         specialization = request.POST.get('specialization')
         city = request.POST.get('city')
         gender = request.POST.get('gender')
-        Doctor.objects.create(name=name,user=user,email=email,phone=phone,specialization=specialization,city=city,gender=gender)
+        Doctor.objects.create(name=name, user=user, email=email, phone=phone,
+                              specialization=specialization, city=city, gender=gender)
 
-        return Response('Created',status=status.HTTP_201_CREATED)
+        return Response('Created', status=status.HTTP_201_CREATED)
     except:
-        return Response('Failed',status=status.HTTP_400_BAD_REQUEST)
+        return Response('Failed', status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def updateDoctor(request):
-    # context = {
-    #     'request':request
-    # }   
-    # try:
-    #     doctor = Doctor.objects.get(user=request.user)
-    #     serializer = DoctorSerializer(doctor,data=request.data,context=context)
-    # except:
-    #     serializer = DoctorSerializer(data=request.data,context=context)
-    
-    # if serializer.is_valid(raise_exception=True):
-    #     serializer.save()
-    #     return Response(serializer.data,status=status.HTTP_200_OK)
     name = request.POST.get('name')
     user = request.user
     email = request.user.email
@@ -100,10 +82,10 @@ def updateDoctor(request):
 
     doctor = Doctor.objects.get(user=user)
 
-    doctor.update_or_create(name=name,user=user,email=email,phone=phone,specialization=specialization,city=city,gender=gender)
+    doctor.update_or_create(name=name, user=user, email=email, phone=phone,
+                            specialization=specialization, city=city, gender=gender)
 
-    return Response('Success',status=status.HTTP_200_OK)
-
+    return Response('Success', status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
