@@ -5,5 +5,7 @@ from . import views
 urlpatterns=[
 	# path('createuser/',views.Createuser,name='createuser'),
 	path('doctors/',views.getDoctors),
-	path('create-doctor/',views.createDoctor)
+	path('create-doctor/',views.createDoctor),
+	path('update-doctor/',views.updateDoctor),
+	path('get-doctor/',views.getDoctor),
 ]
