@@ -1,7 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from accounts.models import Patient
+from accounts.models import Patient,CartItem,Product, Order
 
 UserModel = get_user_model()
 
@@ -31,3 +31,29 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model=Patient
         fields=['profile_of','name','gender','age','contact']
+
+class CartItemSerializer(serializers.ModelSerializer):
+    cart_owner=serializers.CharField(max_length=200)
+    product_name = serializers.CharField(max_length=200)
+    product_price = serializers.FloatField()
+    product_quantity = serializers.IntegerField(required=False, default=1)
+
+    class Meta:
+        model=CartItem
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    """Products model serializer"""
+
+    class Meta:
+        model= Product
+        fields= "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    """Order model serializer"""
+
+    class Meta:
+        model= Order
+        fields= "__all__"

@@ -19,4 +19,7 @@ urlpatterns = [
     path('logout/', views.logout, name="logout"),
     path('createpatient/',views.Createpatient,name="createpatient"),
     path('viewpatient/',views.PatientDetail,name="viewpatient"),
+    path('cart-items/', views.CartItemViews.as_view()),
+    path('cart-items/<int:id>/', views.CartItemViews.as_view()),
+    path('viewproducts/',views.ProductsViewSet.as_view())
 ]
