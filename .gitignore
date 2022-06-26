@@ -30,7 +30,7 @@ Latest commit aea8057 on May 17
 *.log
 *.pot
 *.pyc
-__pycache__
+*/__pycache__/
 db.sqlite3
 media
 
