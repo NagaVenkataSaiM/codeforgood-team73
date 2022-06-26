@@ -133,6 +133,11 @@ class CartItemViews(APIView):
         item.delete()
         return Response({"status": "success", "data": "Item Deleted"})
 
+def AllItems(request):
+    x=CartItem.objects.get(cart_owner=request.user)
+    serializer_class = CartItemSerializer(x)
+    return Response(serializer_class.data)
+
 
 class ProductsViewSet(generics.ListCreateAPIView):
     """List products viewset"""

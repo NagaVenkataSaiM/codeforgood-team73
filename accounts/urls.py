@@ -21,6 +21,7 @@ urlpatterns = [
     path('viewpatient/',views.PatientDetail,name="viewpatient"),
     path('cart-items/', views.CartItemViews.as_view()),
     path('cart-items/<int:id>/', views.CartItemViews.as_view()),
+    path('all-cart-items/',views.AllItems,name='all-cart-items'),
     path('viewproducts/',views.ProductsViewSet.as_view()),
     path('createproduct/',views.createProduct,name="createproduct"),
 ]
