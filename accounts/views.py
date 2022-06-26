@@ -132,7 +132,10 @@ class CartItemViews(APIView):
         item = get_object_or_404(CartItem, id=id)
         item.delete()
         return Response({"status": "success", "data": "Item Deleted"})
-
+        
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
 def AllItems(request):
     x=CartItem.objects.get(cart_owner=request.user)
     serializer_class = CartItemSerializer(x)
