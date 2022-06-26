@@ -1,10 +1,9 @@
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-<<<<<<< HEAD
+
 from accounts.models import Patient,CartItem,Product, Order
-=======
->>>>>>> 7e446c4d32038da45c83a941dba267e7af264a64
+
 
 UserModel = get_user_model()
 
@@ -27,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         # Tuple of serialized model fields (see link [2])
         fields = ("id", "username", "password", "email")
-<<<<<<< HEAD
+
 
 class PatientSerializer(serializers.ModelSerializer):
     profile_of=serializers.ReadOnlyField(source='user.username')
@@ -61,5 +60,4 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model= Order
         fields= "__all__"
-=======
->>>>>>> 7e446c4d32038da45c83a941dba267e7af264a64
+

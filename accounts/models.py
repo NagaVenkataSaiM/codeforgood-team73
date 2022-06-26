@@ -1,7 +1,7 @@
 from django.db import models
 
 
-<<<<<<< HEAD
+
 # Create your models here.
 class Patient(models.Model):
 		profile_of = models.CharField(primary_key=True,max_length=100, blank=True, default='')
@@ -38,6 +38,4 @@ class Order(models.Model):
 
     def __str__(self):
         return self.product.name
-=======
-# Create your models here.
->>>>>>> 7e446c4d32038da45c83a941dba267e7af264a64
+
